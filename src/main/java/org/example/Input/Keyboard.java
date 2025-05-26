@@ -4,8 +4,13 @@ import com.github.kwhat.jnativehook.GlobalScreen;
 import com.github.kwhat.jnativehook.NativeHookException;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyEvent;
 import com.github.kwhat.jnativehook.keyboard.NativeKeyListener;
+import com.github.kwhat.jnativehook.keyboard.SwingKeyAdapter;
+import org.example.DataTransferObject.KeyboardDTO;
+import org.example.Utils.Converter;
 
-public class Keyboard implements NativeKeyListener {
+import java.awt.event.KeyEvent;
+
+public class Keyboard extends SwingKeyAdapter {
 
     private InputListener inputListener;
 
@@ -14,28 +19,12 @@ public class Keyboard implements NativeKeyListener {
     }
 
     @Override
-    public void nativeKeyPressed(NativeKeyEvent e) {
-
-        if (e.getKeyCode() == NativeKeyEvent.VC_ESCAPE) {
-            try {
-                GlobalScreen.unregisterNativeHook();
-            } catch (NativeHookException nativeHookException) {
-                nativeHookException.printStackTrace();
-            }
-        }
-
-        inputListener.onKeyboardInput(e);
+    public void keyPressed(KeyEvent keyEvent) {
+        inputListener.onKeyboardInput(Converter.toDTO(KeyboardEventType.PRESS,keyEvent));
     }
 
     @Override
-    public void nativeKeyReleased(NativeKeyEvent e) {
-        inputListener.onKeyboardInput(e);
+    public void keyReleased(KeyEvent keyEvent) {
+        inputListener.onKeyboardInput(Converter.toDTO(KeyboardEventType.RELEASE,keyEvent));
     }
-
-    @Override
-    public void nativeKeyTyped(NativeKeyEvent e) {
-        inputListener.onKeyboardInput(e);
-    }
-
-
 }

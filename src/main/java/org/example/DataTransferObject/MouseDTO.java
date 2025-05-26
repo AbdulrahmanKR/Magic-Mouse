@@ -2,13 +2,19 @@ package org.example.DataTransferObject;
 
 import org.example.Input.MouseEventType;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 /**
  * Data Transfer Object (DTO) representing a mouse event.
  *
  * This class is used to transfer mouse event data (e.g. position, button, type)
- * between systems, such as from a server to a client.
+ * between systems, from the server to a client.
  */
-public class MouseDTO {
+public class MouseDTO implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private final MouseEventType mouseType;
 
